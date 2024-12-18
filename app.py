@@ -20,7 +20,7 @@ from scipy.signal import find_peaks
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+
 # Initialize FastAPI app
 app = FastAPI(title="Handwriting Analysis System")
 
@@ -490,13 +490,16 @@ class HandwritingAnalyzer:
             raise ValueError("OPENAI_API_KEY environment variable is not set")
 
         openai.api_key = self.openai_api_key
-
+        logging.info("OpenAI API key successfully set.")
         # Load ML models
         self.load_models()
 
-    except Exception as e:
-        logger.error(f"Error in setup: {str(e)}")
-        raise
+        except ValueError as e:
+            logging.error(f"Environment setup error: {e}")
+            raise
+        except Exception as e:
+            logging.error(f"Unexpected error: {e}")
+            raise
 
     def load_models(self):
         """Load or initialize ML models"""
