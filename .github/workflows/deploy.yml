@@ -22,7 +22,7 @@ jobs:
 
       # Step 3: Install dependencies
       - name: Install dependencies
-        working-directory: /HandwritingAnalysis/  # Change this if your package.json is in a subdirectory
+        working-directory: frontend  # Change this if your package.json is in a subdirectory
         run: npm install
 
       # Step 4: Build the project
