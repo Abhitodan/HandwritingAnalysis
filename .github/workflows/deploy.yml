@@ -20,19 +20,25 @@ jobs:
         with:
           node-version: 16  # Adjust Node.js version as needed
 
-      # Step 3: Install dependencies
+      # Step 3: Ensure Required Directories Exist
+      - name: Ensure directories exist
+        run: |
+          mkdir -p frontend  # Replace 'frontend' with the directory name you want to ensure exists
+          mkdir -p build     # Ensure the output build directory exists
+
+      # Step 4: Install dependencies
       - name: Install dependencies
-        working-directory: frontend  # Change this if your package.json is in a subdirectory
+        working-directory: frontend  # Ensure this matches your actual directory structure
         run: npm install
 
-      # Step 4: Build the project
+      # Step 5: Build the project
       - name: Build project
-        working-directory: ./  # Change this if your build command needs a subdirectory
+        working-directory: frontend  # Ensure this matches your actual directory structure
         run: npm run build
 
-      # Step 5: Deploy to GitHub Pages
+      # Step 6: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build  # Adjust based on your build output directory
+          publish_dir: ./frontend/build  # Ensure this matches your actual build output directory
