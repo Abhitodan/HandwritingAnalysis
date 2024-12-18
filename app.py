@@ -476,24 +476,26 @@ class HandwritingAnalyzer:
         self.setup_resources()
 
     def setup_resources(self):
-        """Initialize necessary resources and directories"""
-        try:
-            # Create required directories
-            directories = ['models', 'data/results', 'data/uploads', 'logs']
-            for dir_path in directories:
-                Path(dir_path).mkdir(parents=True, exist_ok=True)
+    """Initialize necessary resources and directories"""
+    try:
+        # Create required directories
+        directories = ['models', 'data/results', 'data/uploads', 'logs']
+        for dir_path in directories:
+            Path(dir_path).mkdir(parents=True, exist_ok=True)
 
-            # Initialize OpenAI
-            # Hardcoded API Key
-            self.openai_api_key = "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"
-            openai.api_key = self.openai_api_key
+        # Initialize OpenAI
+        self.openai_api_key = os.getenv("OPENAI_API_KEY")
+        if not self.openai_api_key:
+            raise ValueError("OPENAI_API_KEY environment variable is not set")
 
-            # Load ML models
-            self.load_models()
+        openai.api_key = self.openai_api_key
 
-        except Exception as e:
-            logger.error(f"Error in setup: {str(e)}")
-            raise
+        # Load ML models
+        self.load_models()
+
+    except Exception as e:
+        logger.error(f"Error in setup: {str(e)}")
+        raise
 
     def load_models(self):
         """Load or initialize ML models"""
