@@ -23,7 +23,8 @@ jobs:
       # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
-
+        working-directory: ./frontend
+        
       # Step 4: Build the project (inject the secret)
       - name: Build project
         env:
