@@ -1,41 +1,38 @@
-name: Deploy to GitHub Pages
+name: Build and Deploy
 
 on:
   push:
     branches:
-      - main  # Trigger workflow on push to the main branch
+      - main  # Trigger workflow on pushes to the main branch
 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout your repository
+      # Step 1: Check out the repository
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Node.js (if using Node.js for build)
+      # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: 16  # Adjust Node.js version as needed
 
       # Step 3: Install dependencies
       - name: Install dependencies
+        working-directory: ./  # Change this if your package.json is in a subdirectory
         run: npm install
-        working-directory: ./frontend
-        
-      # Step 4: Build the project (inject the secret)
+
+      # Step 4: Build the project
       - name: Build project
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Use your secret here
-        run: |
-          echo "Building project..."
-          npm run build  # Customize as per your build command
+        working-directory: ./  # Change this if your build command needs a subdirectory
+        run: npm run build
 
       # Step 5: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build  # Adjust to your build output directory
+          publish_dir: ./build  # Adjust based on your build output directory
